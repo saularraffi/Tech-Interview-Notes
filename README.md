@@ -1,6 +1,6 @@
 # Tech Interview Notes
 
-## Methodology
+## > Methodology
 
 1. Understand the scenario and what the question is asking of you
 2. Write down details of the question (unique information gives you hints to optimal solutions) 
@@ -8,19 +8,19 @@
 4. Illustrate the problem and start with a generic example with no special cases and of sufficient size (most provided examples are too small, by about 50%)
 5. Start with the brute force approach. Come up with the algorithm (without actually implementing) and complexity.
 6. Optimize your algorithm
-    - Can I try to solve this problem intuitively and see what I come up with?
-    - Can I find an optimal solution based on details/constraints given by the question?
-    - Am I doing repetative work that can be avoided?
-    - Are there data structures that are better to use than others?
-    - What is the base case? Can I work up from there? (Dynamic programming)
-    - Can I perform any precomputation on the input? Will sorting help me?
-    - Can I implement two-pointer / multi-pointer traversal? Will the pointers move out-to-in or in-to-out?
-    - Should I use recursion or iteration?
-    - Can I implement BFS or DFS?
-    - Can I implement a decision tree? (technically just implemented as a recursive function, but looks like a tree when drawn out)
-    - Are there time vs. space tradeoffs that can be made to make one or the other more efficient?
-    - Can I simplify the input temporarily to make it easier to solve the problem?
-    - Is there a different parameter for success I can look for?
+    - Can I try to solve this problem **```intuitively```** and see what I come up with?
+    - Can I find an optimal solution based on **```details/constraints```** given by the question?
+    - Am I doing **```repetative work```** that can be avoided?
+    - Are there **```data structures```** that are better to use than others? (array/string, stack, queue, hash table, tree, etc.)
+    - What is the **```base case```**? Can I work up from there? (Dynamic programming)
+    - Can I perform any **```precomputation```** on the input? Will sorting help me?
+    - Can I **```manipulate the input```** to help me? (ex. changing values in an input array)
+    - Can I implement **```two-pointer / multi-pointer traversal```**? Will the pointers move out-to-in or in-to-out?
+    - Should I use **```recursion or iteration```**? Can I implement a decision tree (recursive)?
+    - Can I implement **```BFS or DFS```**?
+    - Are there **```time vs. space tradeoffs```** that can be made to make one or the other more efficient?
+    - Can I **```simplify the input```** temporarily to make it easier to solve the problem?
+    - Is there a **```different parameter for success```** I can look for?
 7. Walk through the steps of your algorithm and make sure it works, conceptually
 8. Implement the algorithm
 9. Test your code
@@ -33,7 +33,7 @@
         - the start and end of iteration through a linked list
     4. test edge cases
 
-## Recursive Algorithm Methodology
+## > Recursive Algorithm Methodology
 
 [YouTube - 5 Simple Steps for Solving Any Recursive Problem](https://www.youtube.com/watch?v=ngCos392W4w)
 
@@ -43,7 +43,7 @@
 4. Generalize the pattern
 5. Write code by combining recursive pattern with the base case(s)
 
-## Questions To Ask Interviewer
+## > Questions To Ask Interviewer
 
 - does the input data structure contain any of the following?
     - negative numbers? 
@@ -55,11 +55,13 @@
 - is the input data structure sorted? in ascending or descending order?
 - can I manipulate the input data structure
 - if the input is a tree, is it a BST? is it a balanced tree?
+    - if I'm given a tree and a node, is the node guaranteed to be in the tree?
 - if linked list, is it a singly or doubly linked list?
+- if graph, are there any loops? any self-loops?
 - should I optimize for space or time?
 - how big is the size of the input? how big is the range of values?
 
-## Python Specific
+## > Python Specific
 
 - ```Ord(char)``` --> returns the Unicode value of the character char
 - ```%``` --> get remainder (ex. 10%3 = 1)
@@ -110,8 +112,10 @@
 - ```num % biggerNum = num``` --> ex. 8 % 10 = 8
 - ```array.copy()``` --> returns a shallow copy of the array
     - ```array[:]``` --> returns the same thing, since the copy method may not work based on the python version
+- ```set1.union(set2)``` --> combines set1 and set2 and returns resulting set (duplicates are removed)
+- ```dict1.update(dict2)``` --> combines dict1 and dict2 and assings resulting dict to dict1 (duplicates are removed)
 
-## General Notes
+## > General Notes
 
 **Remember - you are not developing your skill to code, you are developing your skill to find the simplest and most optimal solution**
 
@@ -135,12 +139,17 @@
 - when you have multiple conditionals in an if statement, grouping statments into parentheses does matter
     - the statement ```if False and False or True``` is true, but the statement ```if False and (False or True)``` is false
         - this is because the first statement is interpreted as ```if (False and True) or True``` --> ```if False or True```
+- There are 3 basic ways to represent a graph in memory (objects and pointers, matrix, and adjacency list) --> familiarize yourself with each representation and its pros & cons
+- In general, a graph traveral algorithm will have a time complexity of **O(V + E)**, where ```V``` is the number of verticies and ```E``` is the number of edges
+    - this is because some graphs have more verticies than edges (like when some nodes have no edges to/from other nodes) and some graphs have more edges than verticies
 
-## LeetCode Problems To Come Back To
-- these are problems that had valuable lessons, not necessarily problems that were just hard
+## > LeetCode Problems To Come Back To
+### these are problems that had valuable lessons, not necessarily problems that were just hard
+
 39. Combination Sum
+547. Number of Provinces (popular in Amazon)
 
-## Code Notes
+## > Code Notes
 
 - when performing a recursive algorithm to generate some BST, this is valid
     ```python
@@ -242,7 +251,7 @@
 
 - example of using a class to manage data during a recursive algorithm
     ```python
-    class TreeInfo():
+    class TreeInfo:
         def __init__(self, nodeCount=0):
             self.nodeCount = nodeCount
     
@@ -259,6 +268,35 @@
         # working with TreeInfo
         treeInfo.nodeCount += 1 # <---
         getNodeCountHelper(root.right, treeInfo)
+    ```
+
+- another example of using a class to manage data during a recursive algorithm
+    - this is from the ```Height Balanced Binary Tree``` problem from AlgoExpert, in which you must return true if the input tree is balanced and false if it is not
+    ```python
+    class TreeInfo:
+        def __init__(self, height, isBalanced):
+            self.height = height
+            self.isBalanced = isBalanced
+        
+    def heightBalancedBinaryTree(tree):
+        return heightBalancedBinaryTreeHelper(tree).isBalanced
+
+    def heightBalancedBinaryTreeHelper(tree):
+        if tree is None:
+            return TreeInfo(0, True)
+        
+        leftSubtreeInfo = heightBalancedBinaryTreeHelper(tree.left)
+        rightSubtreeInfo = heightBalancedBinaryTreeHelper(tree.right)
+        
+        # notice multi-line conditional --> better readability
+        isBalanced = (
+            leftSubtreeInfo.isBalanced and 
+            rightSubtreeInfo.isBalanced and
+            abs(leftSubtreeInfo.height - rightSubtreeInfo.height) <= 1
+        )
+        height = max(leftSubtreeInfo.height, rightSubtreeInfo.height) + 1
+        
+        return TreeInfo(height, isBalanced)
     ```
 
 - a problem that has 2 scenarios --> ex. checking if array is monotonic (non-increasing or non-decreasing)
@@ -312,4 +350,141 @@
 
     def swapLeftAndRight(tree):
         tree.left, tree.right = tree.right, tree.left
+    ```
+
+- when passing an array to a recursive function, if you want the array to be exclusive to eachh call (rather than other function calls being able to manipulate the same array), then you must pass a **copy** of the array
+    - this algorithm returns an array of all paths of a tree from its root to each of its lead nodes
+    ```python
+    # input
+    #           2
+    #         /   \
+    #        1     3
+
+    def getAllTreePaths(root):
+        finalPaths = []
+        getAllTreePathsHelper(root, [], finalPaths)
+        return finalPaths
+
+    def getAllTreePathsHelper(root, runningPath, finalPaths):
+        if root is None:
+            return
+
+        runningPath.append(root.val)
+
+        if root.left is None and root.right is None:
+            finalPaths.append(runningPath)
+
+        # see here that we are passing runningPath[:] to each function call, which passes a copy of runningPath
+        getAllTreePathsHelper(root.left, runningPath[:], finalPaths)
+        getAllTreePathsHelper(root.right, runningPath[:], finalPaths)
+
+    # output
+    # [[2, 1], [2, 3]]
+    ```
+
+    - this is what the output would be if the runningPath array itself, rather than a copy of it, was passed to each function call
+    ```python
+    # input
+    #           2
+    #         /   \
+    #        1     3
+
+    def getAllTreePaths(root):
+        ...
+
+    def getAllTreePathsHelper(root, runningPath, finalPaths):
+        ...
+
+        getAllTreePathsHelper(root.left, runningPath, finalPaths)
+        getAllTreePathsHelper(root.right, runningPath, finalPaths)
+
+    # output
+    # [[2, 1, 3], [2, 1, 3]]
+    ```
+    - you can see that, because the same array was being manipulated throughout the function calls, the output subarrays are all the same
+
+- you can embed a function definition within another function definition
+    - this algorithm returns a unique list of all duplicate values within a Binary Tree
+    ```python
+    def getDuplicateValues(root):
+        values = set()
+        duplicates = set()
+
+        # nested function definition
+        def findDuplicates(root):
+            if root is None:
+                return
+            if root.val in values and root.val not in duplicates:
+                duplicates.add(root.val)
+
+            values.add(root.val)
+            
+            findDuplicates(root.left)
+            findDuplicates(root.right)
+
+        # call the function here
+        findDuplicates(root)
+        return list(duplicates)
+    ```
+    - benefits of this
+        - more readability --> you know that the nested function is only called by the parent function and its implementation can be abstracted from the overall implementation
+        - you can use local variables within the parent function inside the nested function without passing them as arguments 
+
+- example of an iterative approach to depth first search algorithm using stack (in this example, performing in-order traversal on a Binary Tree)
+    ```python
+    def inOrderTraversal(root):
+        stack = []
+        current = root
+
+        while True:
+            # keep pushing to stack while left child exists
+            if current is not None:
+                stack.append(current)
+                current = current.left
+            # after left checked, push right child to stack
+            elif len(stack): # notice how we don't need to say 'elif len(stack) > 0'
+                current = stack.pop()
+                print(current.val)
+                current = current.right
+            else:
+                break
+    ```
+
+- example of using a stack for DFS on a graph
+    ```python
+    def dfs(node):
+        stack = [node]
+
+        while len(stack):
+            node = stack.pop()
+            print(node.val)
+            # we reverse so that the last child pushed onto the stack is the node's leftmost child
+            for child in reversed(node.children):
+                stack.append(child)
+    ```
+
+- sometimes you can use an array instead of a hash table (ex. when keeping track of visited elements in an array) because both will have a constant lookup time 
+    - this algorithm check to see if an array completes one full cycle, treating each element in the array as the next index to check (not sure if this algorithm is implemented 100% correctly)
+    ```python
+    # input --> [4, 3, 1, 0, 2]
+    # this contains one full cycle
+    # [>4, 3, 1, 0, 2]
+    # [4, 3, 1, 0, >2]
+    # [4, 3, >1, 0, 2]
+    # [4, >3, 1, 0, 2]
+    # [4, 3, 1, >0, 2]
+    # [>4, 3, 1, 0, 2]
+
+    def completesOneFullCycle(array):
+        idx = 0
+        # every time an element is visited, that position is marked in positionsVisited
+        positionsVisited = [False for _ in range(len(array))]
+        for i in range((len(array))):
+            nextIdx = array[idx]
+            if positionsVisited[nextIdx] == True:
+                return False
+            idx = array[idx]
+            positionsVisited[idx] = True
+
+        return idx == 0
     ```
