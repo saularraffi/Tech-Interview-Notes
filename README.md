@@ -24,14 +24,14 @@
 7. Walk through the steps of your algorithm and make sure it works, conceptually
 8. Implement the algorithm
 9. Test your code
-    1. look through the code to make sure the code looks fine
-    2. walk through the code with an example input
-    3. focus on "hot spots" (parts of code that often cayse problem)
-        - base cases in recursive code
-        - integer division
-        - null nodes in binary trees
-        - the start and end of iteration through a linked list
-    4. test edge cases
+    1. Look through the code to make sure the code looks fine
+    2. Walk through the code with an example input
+    3. Focus on "hot spots" (parts of code that often cayse problem)
+        - Base cases in recursive code
+        - Integer division
+        - Null nodes in binary trees
+        - The start and end of iteration through a linked list
+    4. Test edge cases
 
 ## > Recursive Algorithm Methodology
 
@@ -45,21 +45,21 @@
 
 ## > Questions To Ask Interviewer
 
-- does the input data structure contain any of the following?
-    - negative numbers? 
-    - floating points? 
-    - nulls?
-    - elements of different same data type?
-- can the input data structure be empty or null?
-- are there any duplicate elements in the input data structure?
-- is the input data structure sorted? in ascending or descending order?
-- can I manipulate the input data structure
-- if the input is a tree, is it a BST? is it a balanced tree?
-    - if I'm given a tree and a node, is the node guaranteed to be in the tree?
-- if linked list, is it a singly or doubly linked list?
-- if graph, are there any loops? any self-loops?
-- should I optimize for space or time?
-- how big is the size of the input? how big is the range of values?
+- Does the input data structure contain any of the following?
+    - Negative numbers? 
+    - Floating points? 
+    - Nulls?
+    - Elements of different same data type?
+- Can the input data structure be empty or null?
+- Are there any duplicate elements in the input data structure?
+- Is the input data structure sorted? in ascending or descending order?
+- Can I manipulate the input data structure
+- If the input is a tree, is it a BST? is it a balanced tree?
+    - If I'm given a tree and a node, is the node guaranteed to be in the tree?
+- If linked list, is it a singly or doubly linked list?
+- If graph, are there any loops? any self-loops?
+- Should I optimize for space or time?
+- How big is the size of the input? how big is the range of values?
 
 ## > Python Specific
 
@@ -147,15 +147,15 @@
 - Breadth First Search --> use queue; Depth First Search --> use stack
     - Common theme for array based problems --> see what the result is up until that point, make a determination, continue
 - 3-color depth first search --> to learn more, check out the **Cycle in Graph** problem
-- the join operation to turn an array of strings into one string (ex. "".join(array)) has a time complexity of O(n)
-- when you're planning on solving a problem recursively, at least know the benefits that an iterative solution would have offered --> easier to debug and no avoiding using up space on the call stack
-- when implementing two pointer traversal, it's easier to move pointers from out to in rather than from in to out
-- when you have multiple conditionals in an if statement, grouping statments into parentheses does matter
-    - the statement ```if False and False or True``` is true, but the statement ```if False and (False or True)``` is false
-        - this is because the first statement is interpreted as ```if (False and True) or True``` --> ```if False or True```
+- The join operation to turn an array of strings into one string (ex. "".join(array)) has a time complexity of O(n)
+- When you're planning on solving a problem recursively, at least know the benefits that an iterative solution would have offered --> easier to debug and no avoiding using up space on the call stack
+- When implementing two pointer traversal, it's easier to move pointers from out to in rather than from in to out
+- When you have multiple conditionals in an if statement, grouping statments into parentheses does matter
+    - The statement ```if False and False or True``` is true, but the statement ```if False and (False or True)``` is false
+        - This is because the first statement is interpreted as ```if (False and True) or True``` --> ```if False or True```
 - There are 3 basic ways to represent a graph in memory (objects and pointers, matrix, and adjacency list) --> familiarize yourself with each representation and its pros & cons
 - In general, a graph traveral algorithm will have a time complexity of **O(V + E)**, where ```V``` is the number of verticies and ```E``` is the number of edges
-    - this is because some graphs have more verticies than edges (like when some nodes have no edges to/from other nodes) and some graphs have more edges than verticies
+    - This is because some graphs have more verticies than edges (like when some nodes have no edges to/from other nodes) and some graphs have more edges than verticies
 
 ## > LeetCode Problems To Come Back To
 ### these are problems that had valuable lessons, not necessarily problems that were just hard
@@ -165,7 +165,7 @@
 
 ## > Code Notes
 
-- when performing a recursive algorithm to generate some BST, this is valid
+- When performing a recursive algorithm to generate some BST, this is valid
     ```python
     def generateTree(self, bst, array):
         # BASE CASE(S)
@@ -179,9 +179,9 @@
         return bst
 
     ```
-    - because you first call the func with ```bst``` as ```None```, then you set ```bst``` to be a node, then you call the function on its left child and right child. In those function calls, ```bst``` is ```None``` again, and when they return, they return those trees to ```bst.left``` and ```bst.right```, respecively.
+    - Because you first call the func with ```bst``` as ```None```, then you set ```bst``` to be a node, then you call the function on its left child and right child. In those function calls, ```bst``` is ```None``` again, and when they return, they return those trees to ```bst.left``` and ```bst.right```, respecively.
 
-- consider using an enum for more readable code
+- Consider using an enum for more readable code
     ```python
     HOME_TEAM_WON = 1
     AWAY_TEAM_WON = 2
@@ -197,7 +197,7 @@
         # SOME CODE
     ```
 
-- binary search implemented
+- Binary search implemented
     ```python
     def binary_search(arr, target):
         start = 0
@@ -219,7 +219,7 @@
         return -1
     ```
 
-- reverse an array in place
+- Reverse an array in place
     ```python
     def reverseArrayInPlace(array):
         start = 0
@@ -230,7 +230,7 @@
             end -= 1
     ```
 
-- notice how the caching system is implemented in the ```nth fibonacci``` recursive algorithm
+- Notice how the caching system is implemented in the ```nth fibonacci``` recursive algorithm
     ```python
     def getNthFib(n, cache={1: 0, 2: 1}):
         if n in cache:
@@ -240,7 +240,7 @@
             return cache[n]
     ```
 
-- setting up a for loop with reverse indexing
+- Setting up a for loop with reverse indexing
     ```python
     s = 'hello'
 
@@ -263,7 +263,7 @@
     # i=0 char=h
     ```
 
-- example of using a class to manage data during a recursive algorithm
+- Example of using a class to manage data during a recursive algorithm
     ```python
     class TreeInfo:
         def __init__(self, nodeCount=0):
@@ -284,8 +284,8 @@
         getNodeCountHelper(root.right, treeInfo)
     ```
 
-- another example of using a class to manage data during a recursive algorithm
-    - this is from the ```Height Balanced Binary Tree``` problem from AlgoExpert, in which you must return true if the input tree is balanced and false if it is not
+- Another example of using a class to manage data during a recursive algorithm
+    - This is from the ```Height Balanced Binary Tree``` problem from AlgoExpert, in which you must return true if the input tree is balanced and false if it is not
     ```python
     class TreeInfo:
         def __init__(self, height, isBalanced):
@@ -313,7 +313,7 @@
         return TreeInfo(height, isBalanced)
     ```
 
-- a problem that has 2 scenarios --> ex. checking if array is monotonic (non-increasing or non-decreasing)
+- A problem that has 2 scenarios --> ex. checking if array is monotonic (non-increasing or non-decreasing)
     ```python
     def isMonotonic(array):
         isNonDecreasing = True
@@ -331,7 +331,7 @@
         return isNonDecreasing or isNonIncreasing
     ```
 
-- creating a BST without a helper function (for this example, assuming the array is sorted in ascending order)
+- Creating a BST without a helper function (for this example, assuming the array is sorted in ascending order)
     ```python
     def createTree(array):
         if len(array) == 0:
@@ -346,7 +346,7 @@
         return TreeNode(currentValue, leftSubtree, rightSubtree)
     ```
 
-- when a problem involves doing something to each level of a binary tree, consider an **iterative** algorithm using a **queue**
+- When a problem involves doing something to each level of a binary tree, consider an **iterative** algorithm using a **queue**
     - example, inverting a binary tree
     ```python
     def invertBinaryTree(tree):
@@ -366,8 +366,8 @@
         tree.left, tree.right = tree.right, tree.left
     ```
 
-- when passing an array to a recursive function, if you want the array to be exclusive to eachh call (rather than other function calls being able to manipulate the same array), then you must pass a **copy** of the array
-    - this algorithm returns an array of all paths of a tree from its root to each of its lead nodes
+- When passing an array to a recursive function, if you want the array to be exclusive to eachh call (rather than other function calls being able to manipulate the same array), then you must pass a **copy** of the array
+    - This algorithm returns an array of all paths of a tree from its root to each of its lead nodes
     ```python
     # input
     #           2
@@ -396,7 +396,7 @@
     # [[2, 1], [2, 3]]
     ```
 
-    - this is what the output would be if the runningPath array itself, rather than a copy of it, was passed to each function call
+    - This is what the output would be if the runningPath array itself, rather than a copy of it, was passed to each function call
     ```python
     # input
     #           2
@@ -415,10 +415,10 @@
     # output
     # [[2, 1, 3], [2, 1, 3]]
     ```
-    - you can see that, because the same array was being manipulated throughout the function calls, the output subarrays are all the same
+    - You can see that, because the same array was being manipulated throughout the function calls, the output subarrays are all the same
 
-- you can embed a function definition within another function definition
-    - this algorithm returns a unique list of all duplicate values within a Binary Tree
+- You can embed a function definition within another function definition
+    - This algorithm returns a unique list of all duplicate values within a Binary Tree
     ```python
     def getDuplicateValues(root):
         values = set()
@@ -440,11 +440,11 @@
         findDuplicates(root)
         return list(duplicates)
     ```
-    - benefits of this
-        - more readability --> you know that the nested function is only called by the parent function and its implementation can be abstracted from the overall implementation
-        - you can use local variables within the parent function inside the nested function without passing them as arguments 
+    - Benefits of this
+        - More readability --> you know that the nested function is only called by the parent function and its implementation can be abstracted from the overall implementation
+        - You can use local variables within the parent function inside the nested function without passing them as arguments 
 
-- example of an iterative approach to depth first search algorithm using stack (in this example, performing in-order traversal on a Binary Tree)
+- Example of an iterative approach to depth first search algorithm using stack (in this example, performing in-order traversal on a Binary Tree)
     ```python
     def inOrderTraversal(root):
         stack = []
@@ -464,7 +464,7 @@
                 break
     ```
 
-- example of using a stack for DFS on a graph
+- Example of using a stack for DFS on a graph
     ```python
     def dfs(node):
         stack = [node]
@@ -477,8 +477,8 @@
                 stack.append(child)
     ```
 
-- sometimes you can use an array instead of a hash table (ex. when keeping track of visited elements in an array) because both will have a constant lookup time 
-    - this algorithm check to see if an array completes one full cycle, treating each element in the array as the next index to check (not sure if this algorithm is implemented 100% correctly)
+- Sometimes you can use an array instead of a hash table (ex. when keeping track of visited elements in an array) because both will have a constant lookup time 
+    - This algorithm check to see if an array completes one full cycle, treating each element in the array as the next index to check (not sure if this algorithm is implemented 100% correctly)
     ```python
     # input --> [4, 3, 1, 0, 2]
     # this contains one full cycle
@@ -503,7 +503,7 @@
         return idx == 0
     ```
 
-- heap class implementation
+- Heap class implementation
     ```python
     class MinHeap:
         def __init__(self, array):
