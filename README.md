@@ -63,17 +63,11 @@
 
 ## > Python Specific
 
-- ```Ord(char)``` --> returns the Unicode value of the character char
-- ```%``` --> get remainder (ex. 10%3 = 1)
-- If you take the modulo of a negative number, let's say -4%3, you get the number of 3's it takes to make -4 positive --> 2
+### Strings and Arrays
 - ```array[i], array[j] = array[j], array[y]``` --> swaps two values in array
 - ```elem1, elem2 = array[0], array[1]``` --> in general you can assign 2 values at the same time
     - ```val1, val2 = dict[key1], dict[key2]``` --> works for dictionaries too
     - ```x, y = 1, 2``` --> even with just numbers
-- The sort method on arrays has time complexity O(nlog(n))
-- ```for key, value in dict.items():``` --> iterate over dictionary
-- ```x is not None``` --> check if x is not null (can't do x not None)
-- ```if x is not None and ...``` --> so if x is None, then the second part of the if statement won't execute.  This is only the casing when ANDing
 - ```list(string)``` --> turns string into array of chars and returns the array
     - ```list(dict)``` --> turns a dictionary into an array of keys and returns the array
     - ```list(dict.values())``` --> turns a dictionary into an array of the values and returns the array
@@ -82,38 +76,58 @@
 - Dictionaries are ordered in python
 - ```list.reverse()``` --> reverse an array, doesn't work on string
 - ```list[::-1]``` --> reverse an array or string
-- in an if statement with an 'and' operator, both conditions execute. It's not that if the first is false, then the second won't execute
-- ```for i in range(x, -1, -1)``` --> iterate x times in reverse order
-- ```for i in reversed(array)``` --> iterate over array in reverse
-- ```float("inf") and float("-inf")``` --> infinity and negative infinity
-- Sets are used to store multiple items in a single variable, ex. myset = {"apple", "banana", "cherry"}
-- ```set.add(x)``` --> add an element to a set
-- ```mySet = set()``` --> initialize empty set.  If you try to do mySet = {}, then you initialize a dictionary
-- Only arrays, dictionaries, and sets are mutable in python
-- When you pass a mutable datatype as an argument to python function, you can change its state within the function.  If you pass an immutable datatype as an argument to a python function, you cannot change its state
-    - If you pass in an object, you can change its object properties, but you cannot assign the object itself to a new instance
-- ```//``` --> round down division operator --> 5 / 3 = 2.5, but 5 // 3 = 2 --> eliminates need to cast to int
-- ```sorted(array, key=lambda x: x[0])``` --> sort array by the first element of each sub array
-- ```[0 for col in range(n)]``` --> create an array of zeros with length n
-- ```[[0 for col in range(n)] for row in range(m)]``` --> create an n by m sized matrix of zeros
-- ```for idx, val in enumerate(array)``` --> allows you to loop over array and get both the value and the index, so now you can use this all the time rather than having to choose between the two types of for loops
-- ```sorted(array)``` --> does the same thing as the sort() method but this returns the sorted array
-    - ```sorted(string)``` --> takes in a string, splits up into array of characters, and sorts and returns the array of characters
 - ```string[start:end]``` --> get substring from index start (inclusive) to index end (exclusive)
     - Also works for arrays
     - ```array[:x]``` --> from beginning to x (exclusive)
     - ```array[x:]``` --> from x (inclusive) to end
-- ```for _ in range(x)``` --> for when you don't need to access the variable in the for loop
+- ```f"My name is {saular} and I am {25} years old"``` --> this is an f string and it does the same things as the **.format()** method
+
+### Hash Tables
+- Sets are used to store multiple items in a single variable, ex. myset = {"apple", "banana", "cherry"}
+- ```set.add(x)``` --> add an element to a set
+- ```mySet = set()``` --> initialize empty set.  If you try to do mySet = {}, then you initialize a dictionary
 - ```del dict[key]``` --> delete a key from dictionary
-- ```num**x``` --> number to the power of x
-- ```array.sort(reverse=True)``` sort an array in reverse order
-- ```if type(x) is list``` --> check if element is a list; can work with other data types
 - ```dict.get(key, default)``` --> returns the value of the key, if key does not exist then return default
-- ```num % biggerNum = num``` --> ex. 8 % 10 = 8
-- ```array.copy()``` --> returns a shallow copy of the array
-    - ```array[:]``` --> returns the same thing, since the copy method may not work based on the python version
 - ```set1.union(set2)``` --> combines set1 and set2 and returns resulting set (duplicates are removed)
 - ```dict1.update(dict2)``` --> combines dict1 and dict2 and assings resulting dict to dict1 (duplicates are removed)
+- ```mySet = {1,2,3} ... mySet.add(3)``` --> attempting to add a value that is already in a set will not add it to the set
+
+### Iteration
+- ```for key, value in dict.items():``` --> iterate over dictionary
+- ```for i in range(x, -1, -1)``` --> iterate x times in reverse order
+- ```for i in reversed(array)``` --> iterate over array in reverse
+- ```[0 for col in range(n)]``` --> create an array of zeros with length n
+- ```[[0 for col in range(n)] for row in range(m)]``` --> create an n by m sized matrix of zeros
+- ```for idx, val in enumerate(array)``` --> allows you to loop over array and get both the value and the index, so now you can use this all the time rather than having to choose between the two types of for loops
+- ```for _ in range(x)``` --> for when you don't need to access the variable in the for loop
+- ```array.copy()``` --> returns a shallow copy of the array
+    - ```array[:]``` --> returns the same thing, since the copy method may not work based on the python version
+
+### Sorting
+- ```sorted(array, key=lambda x: x[0])``` --> sort array by the first element of each sub array
+- ```sorted(array)``` --> does the same thing as the sort() method but this returns the sorted array
+    - ```sorted(string)``` --> takes in a string, splits up into array of characters, and sorts and returns the array of characters
+- ```array.sort(reverse=True)``` sort an array in reverse order
+
+### Math Operations
+- ```%``` --> get remainder (ex. 10%3 = 1)
+- If you take the modulo of a negative number, let's say -4%3, you get the number of 3's it takes to make -4 positive -> 2
+- ```//``` --> round down division operator --> 5 / 3 = 2.5, but 5 // 3 = 2 --> eliminates need to cast to int
+- ```num**x``` --> number to the power of x
+- ```num % biggerNum = num``` --> ex. 8 % 10 = 8
+
+### Other
+- ```Ord(char)``` --> returns the Unicode value of the character char
+- The sort method on arrays has time complexity O(nlog(n))
+- ```x is not None``` --> check if x is not null (can't do x not None)
+- ```if x is not None and ...``` --> so if x is None, then the second part of the if statement won't execute.  This is only the casing when ANDing
+- in an if statement with an 'and' operator, both conditions execute. It's not that if the first is false, then the second won't execute
+- ```float("inf") and float("-inf")``` --> infinity and negative infinity
+- Only arrays, dictionaries, and sets are mutable in python
+- When you pass a mutable datatype as an argument to python function, you can change its state within the function.  If you pass an immutable datatype as an argument to a python function, you cannot change its state
+    - If you pass in an object, you can change its object properties, but you cannot assign the object itself to a new instance
+- ```if type(x) is list``` --> check if element is a list; can work with other data types
+
 
 ## > General Notes
 
@@ -487,4 +501,96 @@
             positionsVisited[idx] = True
 
         return idx == 0
+    ```
+
+- heap class implementation
+    ```python
+    class MinHeap:
+        def __init__(self, array):
+            self.heap = self.buildHeap(array)
+        
+        # ===================== Core Functions =====================
+        
+        # O(n) time | O(1) space
+        def buildHeap(self, array):
+            for idx in reversed(range(len(array))):
+                if not self.hasChildren(idx, array):
+                    continue
+                self.siftDown(idx, array)
+            return array
+        
+        # O(log(n)) time | O(1) space
+        def siftDown(self, currentIdx, heap):
+            while self.hasChildren(currentIdx, heap):
+                leftChildIdx = self.getLeftChildIdx(currentIdx, heap)
+                rightChildIdx = self.getRightChildIdx(currentIdx, heap)
+                smallerChildIdx = self.getSmallerChildIdx(currentIdx, heap)
+                
+                if heap[currentIdx] <= heap[smallerChildIdx]:
+                    break
+                
+                self.swap(currentIdx, smallerChildIdx, heap)
+                currentIdx = smallerChildIdx
+
+        # O(log(n)) time | O(1) space
+        def siftUp(self, currentIdx, heap):
+            parentIdx = self.getParentIdx(currentIdx)
+            
+            while parentIdx != -1 and heap[currentIdx] < heap[parentIdx]:
+                self.swap(currentIdx, parentIdx, heap)
+                currentIdx = parentIdx
+                parentIdx = self.getParentIdx(currentIdx)
+
+        # O(1) time | O(1) space
+        def peek(self):
+            return self.heap[0]
+
+        # O(log(n)) time | O(1) space
+        def remove(self):
+            lastIdx = len(self.heap) - 1
+            self.swap(0, lastIdx, self.heap)
+            removed = self.heap.pop()
+            self.siftDown(0, self.heap)
+            return removed
+
+        # O(log(n)) time | O(1) space
+        def insert(self, value):
+            self.heap.append(value)
+            lastIdx = len(self.heap) - 1
+            self.siftUp(lastIdx, self.heap)
+            
+        # ===================== Helper Functions =====================
+
+        def swap(self, i, j, heap):
+            heap[i], heap[j] = heap[j], heap[i]
+        
+        def getParentIdx(self, idx):
+            if idx == 0:
+                return -1
+            return (idx - 1) // 2
+        
+        def getLeftChildIdx(self, idx, heap):
+            leftChildIdx = (idx * 2) + 1
+            if leftChildIdx > len(heap) - 1:
+                return -1
+            return leftChildIdx
+        
+        def getRightChildIdx(self, idx, heap):
+            rightChildIdx = (idx * 2) + 2
+            if rightChildIdx > len(heap) - 1:
+                return -1
+            return rightChildIdx
+
+        def hasChildren(self, idx, heap):
+            leftChild = self.getLeftChildIdx(idx, heap)
+            return leftChild != -1
+
+        def getSmallerChildIdx(self, idx, heap):
+            leftChildIdx = self.getLeftChildIdx(idx, heap)
+            rightChildIdx = self.getRightChildIdx(idx, heap)
+            if leftChildIdx == -1:
+                return -1
+            if rightChildIdx == -1:
+                return leftChildIdx
+            return leftChildIdx if heap[leftChildIdx] <= heap[rightChildIdx] else rightChildIdx
     ```
