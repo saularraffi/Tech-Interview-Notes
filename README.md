@@ -116,6 +116,11 @@
 - ```num**x``` --> number to the power of x
 - ```num % biggerNum = num``` --> ex. 8 % 10 = 8
 
+### Heaps
+- ```heapq.heapify(array)``` --> convert array into heap array
+- ```heapq.heappush(heap, element)``` --> add element to heap 
+- ```heapq.heappop(heap)``` --> remove root of heap and return it
+
 ### Other
 - ```Ord(char)``` --> returns the Unicode value of the character char
 - The sort method on arrays has time complexity O(nlog(n))
@@ -366,7 +371,7 @@
         tree.left, tree.right = tree.right, tree.left
     ```
 
-- When passing an array to a recursive function, if you want the array to be exclusive to eachh call (rather than other function calls being able to manipulate the same array), then you must pass a **copy** of the array
+- When passing an array to a recursive function, if you want the array to be exclusive to each call (rather than other function calls being able to manipulate the same array), then you must pass a **copy** of the array --> because remember, arrays are mutable and when you pass an array to a function, you are just passing a reference to that array, so the new function context is still working with the same array reference as the previous function context
     - This algorithm returns an array of all paths of a tree from its root to each of its lead nodes
     ```python
     # input
@@ -416,6 +421,27 @@
     # [[2, 1, 3], [2, 1, 3]]
     ```
     - You can see that, because the same array was being manipulated throughout the function calls, the output subarrays are all the same
+
+- The last algorithm (with copying) is not space efficient, as a new array is being created with each function call.  Instead of copying the array into each function call, you can just use the same array reference throughout and just pop off the last element before returning from the array
+    ```python
+    def getAllTreePaths(root):
+        ...
+
+    def getAllTreePathsHelper(root, runningPath, finalPaths):
+        if root is None:
+            return
+
+        runningPath.append(root.val)
+
+        if root.left is None and root.right is None:
+            # we still need to append a copy of the array, otherwise all arrays in finalPath will be referencing the same array --> runningPath.pop() at the end of each function call will affect each array in finalPaths
+            finalPaths.append(runningPath[:])
+
+        getAllTreePathsHelper(root.left, runningPath, finalPaths)
+        getAllTreePathsHelper(root.right, runningPath, finalPaths)
+        # once we are done with this node, pop it from the running path so that we can start exploring the parent's right branch
+        runningPath.pop()
+    ```
 
 - You can embed a function definition within another function definition
     - This algorithm returns a unique list of all duplicate values within a Binary Tree
@@ -593,4 +619,19 @@
             if rightChildIdx == -1:
                 return leftChildIdx
             return leftChildIdx if heap[leftChildIdx] <= heap[rightChildIdx] else rightChildIdx
+    ```
+
+- Using a heap to find the kth largest element in an array
+    ```python
+    import heapq
+
+    def findKthLargest(nums, k):
+        # convert nums array into a heap array
+        heapq.heapify(nums)
+        
+        # keep popping root element until kth largest is the root element
+        while len(nums) > k:
+            heapq.heappop(nums)
+        
+        return nums[0]
     ```
