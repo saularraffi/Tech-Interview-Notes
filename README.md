@@ -207,7 +207,6 @@
     def binary_search(arr, target):
         start = 0
         end = len(arr) - 1
-        mid = 0
     
         # remember <= and NOT <
         while start <= end:
@@ -241,6 +240,9 @@
         if n in cache:
             return cache[n]
         else:
+            # 0 1 1 2 3 5 8
+            # when n = 3 --> cache[2] = fib(2) + fib(1) = 1 + 0 = 1
+            # when n = 5 --> cached[5] = fib(4) + fib(3) = 2 + 1 = 3
             cache[n] = getNthFib(n - 1, cache) + getNthFib(n - 2, cache)
             return cache[n]
     ```
@@ -336,7 +338,7 @@
         return isNonDecreasing or isNonIncreasing
     ```
 
-- Creating a BST without a helper function (for this example, assuming the array is sorted in ascending order)
+- Creating a BST from an array without a helper function (for this example, assuming the array is sorted in ascending order)
     ```python
     def createTree(array):
         if len(array) == 0:
@@ -421,8 +423,7 @@
     # [[2, 1, 3], [2, 1, 3]]
     ```
     - You can see that, because the same array was being manipulated throughout the function calls, the output subarrays are all the same
-
-- The last algorithm (with copying) is not space efficient, as a new array is being created with each function call.  Instead of copying the array into each function call, you can just use the same array reference throughout and just pop off the last element before returning from the array
+    - However, the last algorithm (with copying) is not space efficient, as a new array is being created with each function call.  Instead of copying the array into each function call, you can just use the same array reference throughout and just pop off the last element before returning from the array
     ```python
     def getAllTreePaths(root):
         ...
@@ -439,6 +440,7 @@
 
         getAllTreePathsHelper(root.left, runningPath, finalPaths)
         getAllTreePathsHelper(root.right, runningPath, finalPaths)
+
         # once we are done with this node, pop it from the running path so that we can start exploring the parent's right branch
         runningPath.pop()
     ```
@@ -481,7 +483,7 @@
             if current is not None:
                 stack.append(current)
                 current = current.left
-            # after left checked, push right child to stack
+            # after left is traversed, push right child to stack
             elif len(stack): # notice how we don't need to say 'elif len(stack) > 0'
                 current = stack.pop()
                 print(current.val)
@@ -635,3 +637,6 @@
         
         return nums[0]
     ```
+    - Whereas sorting the array then returning array[-1*k] would run in O(nlog(n)) time, this algorithm runs in O(n) time
+        - Heapifying an array takes O(n) time
+        - Removing the root of a heap takes O(log(n)) time
