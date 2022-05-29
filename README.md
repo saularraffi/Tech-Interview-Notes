@@ -50,11 +50,15 @@
     - Floating points? 
     - Nulls?
     - Elements of different same data type?
+- Is the input data structure valid?
+    - If the input is a BST, is it guaranteed to be a valid BST?
+    - If the input is a linked list, is it guaranteed to be a valid linked list?
+    - Same with graph
 - Can the input data structure be empty or null?
 - Are there any duplicate elements in the input data structure?
 - Is the input data structure sorted? in ascending or descending order?
 - Can I manipulate the input data structure
-- If the input is a tree, is it a BST? is it a balanced tree?
+- If the input is a tree, is it a Binary Tree or BST? is it a balanced tree?
     - If I'm given a tree and a node, is the node guaranteed to be in the tree?
 - If linked list, is it a singly or doubly linked list?
 - If graph, are there any loops? any self-loops?
@@ -91,6 +95,7 @@
 - ```set1.union(set2)``` --> combines set1 and set2 and returns resulting set (duplicates are removed)
 - ```dict1.update(dict2)``` --> combines dict1 and dict2 and assings resulting dict to dict1 (duplicates are removed)
 - ```mySet = {1,2,3} ... mySet.add(3)``` --> attempting to add a value that is already in a set will not add it to the set
+- ```arrayToSet = set(array)``` --> converts array to set and returns the result
 
 ### Iteration
 - ```for key, value in dict.items():``` --> iterate over dictionary
@@ -132,7 +137,6 @@
 - When you pass a mutable datatype as an argument to python function, you can change its state within the function.  If you pass an immutable datatype as an argument to a python function, you cannot change its state
     - If you pass in an object, you can change its object properties, but you cannot assign the object itself to a new instance
 - ```if type(x) is list``` --> check if element is a list; can work with other data types
-
 
 ## > General Notes
 
@@ -484,7 +488,7 @@
                 stack.append(current)
                 current = current.left
             # after left is traversed, push right child to stack
-            elif len(stack): # notice how we don't need to say 'elif len(stack) > 0'
+            elif stack: # notice how we don't need to say 'elif len(stack) > 0'
                 current = stack.pop()
                 print(current.val)
                 current = current.right
@@ -640,3 +644,238 @@
     - Whereas sorting the array then returning array[-1*k] would run in O(nlog(n)) time, this algorithm runs in O(n) time
         - Heapifying an array takes O(n) time
         - Removing the root of a heap takes O(log(n)) time
+
+- Instead of writing an if statement for updating a variable depending on which value is bigger, use the max() function instead
+    ```python
+    array = [4, 5, 1, 8, 9, 0]
+    maxNum = float('-inf')
+
+    for num in array:
+        # instead of this
+        maxNum = num if num > maxNum else maxNum
+
+        # just do this
+        maxNum = max(num, maxNum)
+    ```
+
+## AlgoExpert Solutions Explained
+
+### Three Number Sum
+- sort the input array
+- iterate through array with for loop
+- in each iteration, perform two pointer traversal where leftPtr moves from i+1 to end and rightPtr moves from end to left
+- if array[i] + array[leftPtr] + array[rightPtr] == target sum --> add the triplet to result
+    - if sum < target sum --> move leftPtr to the right
+    - if sum > target sum --> move rightPtr to the left
+- once leftPtr goes past rightPtr, continue to the next iteration in the for loop and reset pointers
+- return the list of triplets
+
+### Smallest Difference
+- sort both arrays
+- perform two pointer traversal, one pointer for each array
+- if difference between array1[ptr1] and array2[ptr2] < smallestDiff --> update smallestDiff
+- move the pointer that points to the smaller element to the right
+    - this is because the arrays are sorted, the pointer pointing to the smallest value needs to be updated so that the difference between the two values decreases
+- return the smallest difference at the end
+
+### Move Element To End
+- perform two pointer traversal with startPtr and endPtr
+- inside outer while loop, while array[endPtr] == valueToMove --> move endPtr left 
+- next, if array[startPtr] == valueToMove --> swap array[startPtr] and array[endPtr]
+- move startPtr right and continue outer loop until startPtr < endPtr
+- return array
+
+### Monotonic Array
+- keep track of two booleans --> isNonDecreasing and isNonIncreasing
+- iterate through input array
+    - if current element is smaller then next element --> isNonIncreasing = False
+    - if current element is larger than next element --> isNonDecreasing = False
+- after loop, return isNonIncreasing or isNonDecreasing
+    - if array is not non-increasing and not non-decreasing, then array is not monotonic
+    - if either non-increasing or non-decreasing, then array is monotonic 
+
+### Spiral Traverse
+- overview: traverse the matrix perimeter by perimeter
+- 4 pointers --> start of row, end of row, start of column, and end of column
+    - first traverse top of box, from left to right
+    - then traverse right side of box, from top to bottom
+    - then traverse bottom of box, from right to left
+    - then traverse left of box, from bottom to top
+- move the 4 pointers inward and do it again until start of row passes end of row or until start of column goes past end of column
+
+### Longest Peak
+- overview: treat each element as a potential peak and calculate left length and right length
+- iterate through array
+- check if left element and right element are < current element
+    - if so, then current element is a peak
+    - else, current element is not peak --> continue to next iteration
+- if peak found, set leftIdx left of current and rightIdx right of current
+- move leftIdx to the left until out of bounds or until next element is greater
+- move rightIdx to the right until out of bounds or until next element is greater
+- peak length is distance between leftIdx and rightIdx
+    - update longest peak length if need be
+- set the next index in the iteration to rightIdx
+- return longest peak
+
+### Array Of Products
+- Method #1
+    - build leftProducts array, which will contain running products from left to right
+        - running product for leftProducts[i] = array[i-1] * array[i-2] * ... * array[0]
+    - build rightProducts array, which will contain running products from right to left
+        - running product for rightProducts[i] = array[i+1] * array[i+2] * ... * array[lastIdx]
+    - build final products array where products[i] = leftProducts[i] * rightProducts[i]
+    - return products array
+
+- Method #2
+    - build products array, which will contain running products from left to right (same as last method)
+    - iterate through input array in reverse, keep track of running product, and set products[i] = array[i] * runningProduct
+    - example:
+        - input array - [5 1 4 2]
+        - products array after first iteration - [1 5 5 20]
+        - products array during second iteration - [1 5 5 20] -> [1 5 10 20] -> [1 40 10 20] -> [8 40 10 20]
+    - return products array
+
+### First Duplicate Value
+- Method #1
+    - initialize hash table
+    - iterate through array
+    - if element is in hash table --> return element
+    - else, add element to hash table
+
+- Method #2
+    - iterate through array
+    - get absolute value of current element
+    - if array[absVal - 1] is negative --> return absVal
+    - else, set array[absVal - 1] to be negative
+    - after loop, return -1 because there are no duplicates
+
+### Merge Overlapping Intervals
+- sort intervals by first element of each interval
+- add first interval to result
+- iterate through intervals
+    - if next interval in array overlaps with last interval in result, set end of last interval in result to max(end of last interval, end of current interval)
+    - else, add interval to result 
+- return result containing non-overlapping intervals
+
+### Validate BST
+- recursive algorithm that traverses all the nodes and checks if the node value is < minVal and >= maxVal
+    - if not, return False
+- check left tree, passing current node val as maxVal
+- check right tree, passing current node val as minVal
+- is left is valid and right is valid, return True
+    - else, return False
+
+### BST Traversal
+- in-order traversal
+    - traverse left
+    - record current node
+    - traverse right
+- pre-order traversal
+    - record current node
+    - traverse left
+    - traverse right
+- post-order traversal
+    - traverse left
+    - traverse right
+    - record current node
+
+### Min Height BST
+- recursive algorithm that calculates middle element of array
+    - if middle element < current node in tree --> set middle element as left child
+    - if middle element >= current node in tree --> set middle element as right child
+- set current node to the newly added node
+- call the recursive function one on left half of array and once on right half of array
+
+### Find Kth Largest Value In BST
+- Method #1
+    - perform in-order traversal and build the array of values
+    - return array[-1 * k]
+
+- Method #2
+    - perform reverse in-order traversal 
+        - traverse right
+        - check current
+        - traverse left
+    - keep track of number of nodes visited and the latest visited node
+    - once number of nodes visited >= k --> return latest visited node
+
+### Reconstruct BST
+
+### Invert Binary Tree
+- Method #1
+    - add root to queue
+    - loop over queue until empty
+    - dequeue node and swap its left and right child
+    - add children to queue
+
+- Method #2
+    - recursive function
+    - swap current node's left and right children
+    - call on left child then right child
+
+### Binary Tree Diameter
+- recursive algorithm
+- calculate diameter of current node --> max of these two pieces of info...
+    - left subtree height + right subtree height
+    - max between left diameter and right diameter
+- at the end of each function call, return height and diameter of current node
+
+### Find Successor
+- Method #1
+    - build in-order traversal array of nodes from the input tree
+    - return the node that comes after the target node in the array
+    - if target node is the last node --> return None
+
+- Method #2
+    - if the target node has a right child --> return the left most child of the node's right child
+    - else, return the right most parent
+
+### Height Balanced Binary Tree
+- recursive algorithm
+- calculate height of current node
+- determine if current node is balanced --> this is true if...
+    - left subtree is balanced
+    - right subtree is balanced
+    - difference between left subtree height and right subtree height is <= 1
+- at the end of each function call, return height and isBalanced for each node
+
+### Max Subset Sum No Adjacent
+
+### Number Of Ways To Make Change
+
+### Min Number Of Coins For Change
+
+### Levenshtein Distance
+
+### Number Of Ways To Traverse Graph
+
+### Kadane's Algorithm
+
+### Single Cycle Check
+- loop n times, where n is the length of the array
+- calculate next index --> current index + value at current index
+    - mod next index with length of array, because it could be out of bounds
+    - next index will either be positive or negative, but both will work because array[-1] will reference last element
+- during the loop, if number of elements visited > 0 and current index is 0 --> return False
+    - without this, there can be loop in graph that goes through index 0 and if it lands on 0 at the end, then we will return True at the end and that's not right
+- after loop, if curren index is 0 --> return True
+    - othewise, return False
+
+### Breadth-first Search
+- add root node to queue
+- dequeue node from queue, add node's children to queue, continue
+
+### River Sizes
+- initialize a matrix of 0's
+- iterate through matrix, marking each position as visited
+- if you come across a 1 and that position in the visited matrix is False --> perform DFS 
+    - count up the number of connected 1's
+- return array of river counts
+
+### Youngest Common Ancestor
+- get the depth of descendant1 and descendant2 in the graph
+- d1 is a pointer to descendant1 and d2 is a pointer to descendant2
+- whichever descendant is deeper in the graph, move respective pointer to parent until both pointers have same depth
+- then, move both pointers up until they land on the same parent --> return that parent node
+
+## LeetCode Solutions Explained
