@@ -165,6 +165,7 @@
 - There are 3 basic ways to represent a graph in memory (objects and pointers, matrix, and adjacency list) --> familiarize yourself with each representation and its pros & cons
 - In general, a graph traveral algorithm will have a time complexity of **O(V + E)**, where ```V``` is the number of verticies and ```E``` is the number of edges
     - This is because some graphs have more verticies than edges (like when some nodes have no edges to/from other nodes) and some graphs have more edges than verticies
+- You likely may be given a dynamic programming problem during the Google on-site interview (based off of what that guy from AlgoExpert mock interview said)
 
 ## > LeetCode Problems To Come Back To
 ### these are problems that had valuable lessons, not necessarily problems that were just hard
@@ -658,6 +659,63 @@
         maxNum = max(num, maxNum)
     ```
 
+- When talking about complexity, realize that there is a difference between O(n + m) and O(max(n, m)). For instance, when traversing a array1 then traversing array2 --> this is O(n + m), whereas traversing both arrays at the same time with 2 pointers and going until the end of the longest one --> this is O(max(n, m))
+    ```python
+    array1 = [1,2,3]
+    array2 = [1,2,3,4,5]
+
+    # this takes n operations
+    for num in array1:
+        ...
+    
+    # this takes m operations
+    for num in array2:
+        ...
+
+    # we have to go through 3 elements in array1 then 5 elements in array2
+    # so, we do n operations and then m operations, so n + m operations in total
+
+    ptr1 = 0
+    ptr2 = 0
+
+    # this will either take n operations or m operations, depending on which is larger
+    while ptr1 < len(array1) or ptr2 < len(array2):
+        ...
+    
+    # if array1 has 3 elements and array2 has 5 elements, then the loop will run 5 times
+    # so there will be max(n, m) operations
+    ```
+
+- Adding an array to another array
+    ```python
+    array1 = [...]
+    array2 = [...]
+
+    # you could just add array2 to array1, but this will create a new array --> not spacially optimal
+    array1 += array2 
+
+    # you could loop through array2 and add elements from array1 one by one
+    for num in array2:
+        array1.append(num)
+    
+    # but you can just use the extend method to do the same thing as above but in one line
+    array1.extend(array2)
+    ```
+
+- When traversing linked list or tree or anything with a next/child node, you can check if next is None like this
+    ```python
+    def printList(head):
+        current = head
+
+        # this is the wordy way
+        while current is not None:
+            print(current.val)
+        
+        # this is the concise way
+        while current:
+            print(current.val) 
+    ```
+
 ## AlgoExpert Solutions Explained
 
 ### Three Number Sum
@@ -878,4 +936,79 @@
 - whichever descendant is deeper in the graph, move respective pointer to parent until both pointers have same depth
 - then, move both pointers up until they land on the same parent --> return that parent node
 
-## LeetCode Solutions Explained
+### Remove Islands
+- initialize a matrix of 0's to denote which elements have been visited
+- iterate through matrix
+- if element is on the border and is a 1 --> perform DFS on it and mark all its corresponding positions in the visited matrix to True
+- at this point, the visited matrix contains all the islands that touch the border
+- afterwards, loop through matrix again and change any 1 to a 0 if it's corresponding position in the visited matrix is False (so if it is not part of a border island)
+
+### Cycle In Graph
+- Method #1
+    - keep track of nodes that have been visited as well as nodes in the current traversal stack
+        - both with arrays for easy indexing
+    - loop through the nodes and for each node, perform DFS
+    - at the start of each DFS traversal, mark the current node as visited in the visited array and mark it in the traversal stack
+        - if a node that we visit is already in the traversal stack --> a cycle exists --> return True
+        - at the end of the DFS function, unmark the current node in the traversal stack
+
+- Method #2
+    - use 3-color DFS
+        - WHITE - node has node been visited
+        - BLACK - node has been visited, but not in stack
+        - GREY - node is in stack
+    - instead of using 2 arrays, one for visited notes and one for nodes in stack --> use one array of colors
+
+### Minimum Passes Of Matrix
+
+### Task Assignment
+
+### Valid Starting City
+
+### Remove Kth Node From End
+- perform 2 pointer traversal --> move ptrRight all the way to the end and only strat moving ptrLeft after k nodes have been seen
+- at the end of the traversal, ptrRight should be pointing to None at the end of the list and ptrLeft should be pointing to the node that needs to be deleted (meanwhile, keep track of the node before ptrLeft)
+- set node before ptrLeft to point to node after ptrLeft
+- if ptrLeft is pointing to head, then just move head to the right
+
+### Sum Of Linked List
+- traverse both lists at the same time
+- sum up the two current node values and the carry value (either 1 or 0)
+    - if either node is None --> use the value 0
+- set the carry = sum // 10 --> will result in 1 if sum > 9, otherwise, it will set to 0
+- after the loop, once traversal reaches end of both lists, check if carry is 1
+    - if so, add one more node to the resulting list with value of 1
+    - if you use this as the while loop condition ```while nodeOne or nodeTwo or carry != 0``` --> then after traversal ends for both lists, it will check the carry value and if it is 1, then it will do the above task
+
+### Permutations
+
+### Phone Number Mnemonics
+
+### Staircase Traversal
+
+### Search In Sorted Matrix
+- start looking at the top right corner of the matrix
+- if target is less than current element --> move left
+- if target is greater than current element --> move down
+- if targe == current element --> return coordinate
+- once row or col is out of bounds, exit loop and return [-1, -1]
+    
+### Three Number Sort
+- Method #1
+    - overview: variation of bucket sort
+    - iterate over array and keep count of how many times each value appears
+    - iterate over array again and insert first element x times, second element y times, and third element z times, where x, y, and z are how many times first, second, and third elements appear, respectively
+
+- Method #2
+    - iterate through the array from left to right, moving all first elements to the left by swapping
+    - iterate through the array again, this time from right to left, moving all the third elements to the right by swapper
+    - naturally, the second elements will all result in the middle of the array
+
+- Method #3
+    - use 3 pointer traversal --> firstPtr, secondPtr, thirdPtr
+        - firstPtr will be initialized to first element, secondPtr to second element, and thirdPtr to last element
+    - if element at secondPtr == first expected element --> swap elements at firstPtr and secondPtr, then shift both pointerts to the right
+    - if element at secondPtr == third expected element --> swap elements at secondPtr and thirdPtr, then shift secondPtr right and thirdPtr left
+    - once secondPtr goes past thirdPtr, stop the loop
+
+### Balanced Brackets
