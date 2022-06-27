@@ -43,6 +43,25 @@
 4. Generalize the pattern
 5. Write code by combining recursive pattern with the base case(s)
 
+## > Dynamic Programming Methodology
+
+### Recursion
+
+1. Determine your base case(s)
+2. Determine how to get to the base case
+3. Determine how the solution for n (whatever your current input is) can leverage the solution for n - 1 (whatever the reduced input is)
+    - Visualize the problem as a tree
+4. Make the solution efficient --> leverage memoization
+
+### Tabulation
+
+1. Visualize the problem as a table
+2. Size the table based on the input(s) (may not necessarily be n, could be n + 1 for ex.)
+3. Initialize the table with default values
+    - Based on what the return value of the function will be
+4. Seed the trivial answer into the table --> this is your base case
+5. Iterate through the table, filling further positions in the table based on the current position
+
 ## > Questions To Ask Interviewer
 
 - Does the input data structure contain any of the following?
@@ -137,6 +156,8 @@
 - When you pass a mutable datatype as an argument to python function, you can change its state within the function.  If you pass an immutable datatype as an argument to a python function, you cannot change its state
     - If you pass in an object, you can change its object properties, but you cannot assign the object itself to a new instance
 - ```if type(x) is list``` --> check if element is a list; can work with other data types
+- ```if x := 5 > 3``` --> assign variable within conditional and use it
+    - ```if x := 5 and x > 3``` --> this, however, is invalid because x in the second statement is not defined yet, you must tread **x := 5** as a variable
 
 ## > General Notes
 
@@ -166,6 +187,12 @@
 - In general, a graph traveral algorithm will have a time complexity of **O(V + E)**, where ```V``` is the number of verticies and ```E``` is the number of edges
     - This is because some graphs have more verticies than edges (like when some nodes have no edges to/from other nodes) and some graphs have more edges than verticies
 - You likely may be given a dynamic programming problem during the Google on-site interview (based off of what that guy from AlgoExpert mock interview said)
+- Two ways to think about dynamic programming problem or tell if a problem is based on dynamic programming
+    - If you can think of the problem playing out like a tree
+    - If the answer to the current input can be computed by leveraging the answer to one step down from that input
+        - Ex. fibonacci calculation --> fib of 5 depends on fib of 4 and 4
+- Many dynamic programming problem solutions share a similar vibe with the fibonacci implementation 
+    - And because of this, many can also leverage memoize (hash table)
 
 ## > LeetCode Problems To Come Back To
 ### these are problems that had valuable lessons, not necessarily problems that were just hard
@@ -716,6 +743,43 @@
             print(current.val) 
     ```
 
+- Here is a Suffix Trie Class that will construct a suffix trie from a string and also allow allow you to check if a string is in the trie
+    ```python
+    class SuffixTrie:
+        def __init__(self, string):
+            # each node is a hash table where keys are mapped to other nodes (other hash tables)
+            self.root = {}
+            self.endSymbol = "*"
+            self.populateSuffixTrieFrom(string)
+
+        def addStringToTrie(self, string):
+            current = self.root
+            for char in string:
+                # if char is not in the current node's hash table, add it and set to empty hash table (like None in a tree)
+                if char not in current:
+                    current[char] = {}   
+                # whether char is in node or not, traverse down the tree   
+                current = current[char]
+            # once string is inserted fully, end it with the end symbol
+            current[self.endSymbol] = True
+                    
+        def populateSuffixTrieFrom(self, string):
+            # for each substring, add to trie
+            for idx, _ in enumerate(string):
+                substring = string[idx:len(string)]
+                self.addStringToTrie(substring)
+
+        def contains(self, string):
+            current = self.root
+            for char in string:
+                if char in current:
+                    current = current[char]
+                else:
+                    return False
+            # if all the characters were tracked down the trie, but no end symbol in current node, then the string is not in the trie (the string is a substring but not a full match)
+            return self.endSymbol in current
+    ```
+
 ## AlgoExpert Solutions Explained
 
 ### Three Number Sum
@@ -982,6 +1046,8 @@
 
 ### Permutations
 
+### Powerset
+
 ### Phone Number Mnemonics
 
 ### Staircase Traversal
@@ -1012,3 +1078,71 @@
     - once secondPtr goes past thirdPtr, stop the loop
 
 ### Balanced Brackets
+- create string of opening and closing brackets
+- create dictionary with keys as closing brackets and values as opening brackets
+- initialize empty stack
+- iterate through input string
+    - if char is opening bracket, push to stack
+    - otherwise, if char is closing bracket...
+        - if stack is empty, that means no opening bracket came before --> return false
+        - if top of stack is corresponding opening bracket --> pop
+        - if top of stack is not corresponding opening bracket --> return false
+
+### Sunset Views
+- if direction is East, iterate through buildings from left to right
+- if direction is West, iterate through buildings from right to left
+- keep track of running max height
+- if current building is larger than running max height --> add to result array
+- return result array after loop
+
+### Sort Stack
+- the intuition is to pop an element off stack, sort the remainder of stack, insert element in correct position (by popping element off stac, until correct position found, then pushing elment and then pushing rest of elements)
+- the main recursive function is going to pop element from stack, then call itself again
+    - keep doing this until stack empty
+- going back up the call stack, for each element, insert into correct position in stack
+- insert method is another recursive function
+    - keep popping elements off until stack empty or current element is greater than or equal to top of stack --> push onto stack
+    - going back up call stack, for each element, push back onto stack
+
+### Next Greater Element
+- initialize results array of -1's
+- initialize empty stack
+- iterate over the input array twice (range of double the length of input array)
+    - using mod to keep track of index
+- if stack empty, push index of current element onto stack
+- if current element <= element at index that's on top of stack --> push current index onto stack
+    - otherwise, pop index off stack and set value at that index in results array to the current element
+    - keep doing this until stack empty or current element <= element at index that's on top of stack
+
+### Longest Palindromic Substring
+- palindrome center can either be single char or in between two chars
+- iterate through string and treat each character as a potential palindrome center
+    - use two pointer traversal to compare left and right chars, keep moving outward while left and right match and keep count
+- after each char check, also check if between current char and last char is a center --> another two pointer traversal
+
+### Group Anagrams
+- initialize a hash table (going to act as buckets for anagrams)
+- iterate through the array of strings
+- for each string, sort the string and check if the sorted string is a currently a key in the hash table
+    - if so, append the original string to the list (each key maps to a list of strings)
+    - otherwise, create a new key as the sorted string and map it to an array with one element, the original word
+- after that loop, convert the values in the hash table to a list and return
+    - ```list(anagrams.values())```
+
+### Valid IP Adress
+
+### Reverse Words in String
+- initialize array to hold words and spaces
+- iterate through string and keep track of the running word
+- any time a space is encountered, append running word (if there is one) to array and append space to array, then restart running word
+    - those adjecent individual spaces will be joined in the end and will become clusters of spaces
+- after iteration, reverse list and join everything into one string and return
+
+### Minimum Characters For Words
+- initialize hash table of overall max characters needed
+- for each word in list, create hash table of characters and counts
+- after analyzing each word, go through hash table for that word and for each character...
+    - if character is in max hash table, set its count to max between current max count and character count in current word
+    - otherwise, add character to max hash table and set count to 1
+- after iterating through words list, create result array, appending each character from max hash table n times, where n is the number of times that character is required
+- return result array
